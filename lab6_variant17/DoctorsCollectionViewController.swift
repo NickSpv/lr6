@@ -5,9 +5,10 @@ final class DoctorsCollectionViewController: UICollectionViewController {
 
     init() {
         let layout = UICollectionViewFlowLayout()
-        layout.sectionInset = UIEdgeInsets(top: 12, left: 8, bottom: 12, right: 8)
-        layout.minimumLineSpacing = 0
+        layout.sectionInset = UIEdgeInsets(top: 8, left: 8, bottom: 12, right: 8)
+        layout.minimumLineSpacing = 8
         layout.minimumInteritemSpacing = 0
+        layout.headerReferenceSize = CGSize(width: 0, height: 52)
         super.init(collectionViewLayout: layout)
     }
 
@@ -21,23 +22,11 @@ final class DoctorsCollectionViewController: UICollectionViewController {
 
         collectionView.backgroundColor = UIColor(white: 0.95, alpha: 1)
         collectionView.register(DoctorCollectionViewCell.self, forCellWithReuseIdentifier: DoctorCollectionViewCell.reuseIdentifier)
+        collectionView.register(DoctorsHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: DoctorsHeaderView.reuseIdentifier)
+    }
 
-        let headerLabel = UILabel()
-        headerLabel.text = "📍 «Детская практика»"
-        headerLabel.font = .systemFont(ofSize: 22)
-        headerLabel.textColor = .darkText
-        headerLabel.frame = CGRect(x: 0, y: 0, width: view.bounds.width, height: 56)
-
-        let headerView = UIView(frame: headerLabel.frame)
-        headerView.backgroundColor = .white
-        headerLabel.translatesAutoresizingMaskIntoConstraints = false
-        headerView.addSubview(headerLabel)
-        NSLayoutConstraint.activate([
-            headerLabel.leadingAnchor.constraint(equalTo: headerView.leadingAnchor, constant: 12),
-            headerLabel.centerYAnchor.constraint(equalTo: headerView.centerYAnchor)
-        ])
-        collectionView.addSubview(headerView)
-        collectionView.contentInset.top = 56
+    override func numberOfSections(in collectionView: UICollectionView) -> Int {
+        1
     }
 
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -61,6 +50,15 @@ final class DoctorsCollectionViewController: UICollectionViewController {
         return cell
     }
 
+    override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+        guard kind == UICollectionView.elementKindSectionHeader,
+              let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: DoctorsHeaderView.reuseIdentifier, for: indexPath) as? DoctorsHeaderView else {
+            return UICollectionReusableView()
+        }
+        header.configure(text: "📍 «Детская практика»")
+        return header
+    }
+
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         showDoctorDetails(doctors[indexPath.item])
     }
@@ -80,6 +78,35 @@ final class DoctorsCollectionViewController: UICollectionViewController {
 extension DoctorsCollectionViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let width = collectionView.bounds.width - 16
-        return CGSize(width: width, height: 168)
+        return CGSize(width: width, height: 180)
+    }
+}
+
+final class DoctorsHeaderView: UICollectionReusableView {
+    static let reuseIdentifier = "DoctorsHeaderView"
+
+    private let label = UILabel()
+
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        backgroundColor = .white
+
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.font = .systemFont(ofSize: 20)
+        label.textColor = .darkText
+
+        addSubview(label)
+        NSLayoutConstraint.activate([
+            label.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 12),
+            label.centerYAnchor.constraint(equalTo: centerYAnchor)
+        ])
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    func configure(text: String) {
+        label.text = text
     }
 }

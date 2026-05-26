@@ -35,6 +35,7 @@ final class DoctorCollectionViewCell: UICollectionViewCell {
     func configure(with doctor: Doctor) {
         if let image = UIImage(named: doctor.imageName) {
             doctorImageView.image = image
+            doctorImageView.contentMode = .scaleAspectFill
         } else {
             doctorImageView.image = UIImage(systemName: "person.circle.fill")
             doctorImageView.tintColor = .systemGray3
@@ -53,24 +54,23 @@ final class DoctorCollectionViewCell: UICollectionViewCell {
         contentView.layer.borderWidth = 1
 
         doctorImageView.translatesAutoresizingMaskIntoConstraints = false
-        doctorImageView.contentMode = .scaleAspectFill
         doctorImageView.clipsToBounds = true
         doctorImageView.layer.cornerRadius = 24
 
-        nameLabel.font = .boldSystemFont(ofSize: 18)
-        nameLabel.numberOfLines = 0
+        nameLabel.font = .boldSystemFont(ofSize: 16)
+        nameLabel.numberOfLines = 2
 
-        specialityLabel.font = .systemFont(ofSize: 14)
+        specialityLabel.font = .systemFont(ofSize: 13)
         specialityLabel.textColor = .darkGray
-        specialityLabel.numberOfLines = 0
+        specialityLabel.numberOfLines = 2
 
-        degreeLabel.font = .systemFont(ofSize: 14)
+        degreeLabel.font = .systemFont(ofSize: 13)
         degreeLabel.textColor = .darkGray
-        degreeLabel.numberOfLines = 0
+        degreeLabel.numberOfLines = 1
 
         buttonsStack.translatesAutoresizingMaskIntoConstraints = false
         buttonsStack.axis = .horizontal
-        buttonsStack.spacing = 10
+        buttonsStack.spacing = 8
         buttonsStack.distribution = .fillEqually
 
         configureBookButton()
@@ -80,7 +80,7 @@ final class DoctorCollectionViewCell: UICollectionViewCell {
     private func layoutViews() {
         let textStack = UIStackView(arrangedSubviews: [nameLabel, specialityLabel, degreeLabel])
         textStack.axis = .vertical
-        textStack.spacing = 3
+        textStack.spacing = 2
         textStack.translatesAutoresizingMaskIntoConstraints = false
 
         contentView.addSubview(doctorImageView)
@@ -90,20 +90,20 @@ final class DoctorCollectionViewCell: UICollectionViewCell {
         [bookButton, infoButton].forEach { buttonsStack.addArrangedSubview($0) }
 
         NSLayoutConstraint.activate([
-            doctorImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 12),
-            doctorImageView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 14),
+            doctorImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 10),
+            doctorImageView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 12),
             doctorImageView.widthAnchor.constraint(equalToConstant: 48),
             doctorImageView.heightAnchor.constraint(equalToConstant: 48),
 
-            textStack.leadingAnchor.constraint(equalTo: doctorImageView.trailingAnchor, constant: 12),
-            textStack.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -12),
-            textStack.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 12),
+            textStack.leadingAnchor.constraint(equalTo: doctorImageView.trailingAnchor, constant: 10),
+            textStack.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -10),
+            textStack.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 10),
 
-            buttonsStack.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 12),
-            buttonsStack.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -12),
-            buttonsStack.topAnchor.constraint(equalTo: textStack.bottomAnchor, constant: 10),
-            buttonsStack.heightAnchor.constraint(equalToConstant: 38),
-            buttonsStack.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -14)
+            buttonsStack.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 10),
+            buttonsStack.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -10),
+            buttonsStack.topAnchor.constraint(equalTo: textStack.bottomAnchor, constant: 9),
+            buttonsStack.heightAnchor.constraint(equalToConstant: 34),
+            buttonsStack.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -12)
         ])
     }
 
@@ -111,7 +111,7 @@ final class DoctorCollectionViewCell: UICollectionViewCell {
         bookButton.setTitle("Записаться на прием", for: .normal)
         bookButton.setTitleColor(.white, for: .normal)
         bookButton.backgroundColor = UIColor(red: 0.16, green: 0.74, blue: 0.90, alpha: 1)
-        bookButton.titleLabel?.font = .systemFont(ofSize: 16)
+        bookButton.titleLabel?.font = .systemFont(ofSize: 14)
         bookButton.layer.cornerRadius = 4
         bookButton.layer.shadowColor = UIColor.black.cgColor
         bookButton.layer.shadowOpacity = 0.12
@@ -123,7 +123,7 @@ final class DoctorCollectionViewCell: UICollectionViewCell {
         infoButton.setTitle("Инфо", for: .normal)
         infoButton.setTitleColor(.darkText, for: .normal)
         infoButton.backgroundColor = .white
-        infoButton.titleLabel?.font = .systemFont(ofSize: 16)
+        infoButton.titleLabel?.font = .systemFont(ofSize: 14)
         infoButton.layer.cornerRadius = 4
         infoButton.layer.borderWidth = 1
         infoButton.layer.borderColor = UIColor(red: 0.16, green: 0.74, blue: 0.90, alpha: 1).cgColor
